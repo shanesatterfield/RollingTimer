@@ -1,0 +1,24 @@
+{
+  "name": "TimerFlask",
+  "authors": [
+    "Shane Satterfield <dustyplant@gmail.com>"
+  ],
+  "description": "",
+  "main": "app.py",
+  "moduleType": [
+    "node"
+  ],
+  "license": "MIT",
+  "homepage": "",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "bootstrap": "~3.3.6"
+  }
+}
