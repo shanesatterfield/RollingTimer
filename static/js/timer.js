@@ -18,14 +18,15 @@ app.controller('TimerListController', function($scope) {
 
     $scope.tempTimer = {};
     var nextTimerID = 3;
+    var timerRegex = new RegExp("^(([0-9]+) (hour|Hour|hr|h)s{0,1}){0,1}?\\s*(([0-9]+) (minute|Minute|min|m)s{0,1}){0,1}?\\s*(([0-9]+) (second|Second|sec|s)s{0,1}){0,1}?$");
 
     $scope.addTimer = function() {
         $scope.checkValid($scope.tempTimer);
-        // if($scope.tempTimer.valid) {
+        if($scope.tempTimer.valid) {
             $scope.tempTimer.id = nextTimerID++;
             $scope.timers.push($scope.tempTimer);
             $scope.tempTimer = {}
-        // }
+        }
     };
 
     $scope.checkValid = function(timer) {
@@ -43,9 +44,8 @@ app.controller('TimerListController', function($scope) {
         }
     };
 
-    // TODO: Set up a regex match for this.
     $scope.isValidTime = function(time) {
-        return true;
+        return time.match(timerRegex) != null;
     };
 
     $scope.deleteTimer = function(timer) {
