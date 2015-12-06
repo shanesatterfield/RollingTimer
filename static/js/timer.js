@@ -12,9 +12,11 @@ app.controller('TimerListController', function($scope) {
 
     $scope.timers = [
         { id: 0, time: '1 minute 30 seconds', valid: true },
-        { id: 1, time: '1 minute 30 seconds',  valid: true },
-        { id: 2, time: '1 minute 30 seconds', valid: true }
+        { id: 1, time: '2 hr 45 min 10 sec',  valid: true },
+        { id: 2, time: '2 hours 10 minutes 30 seconds', valid: true }
     ];
+
+    // $scope.timers = [];
 
     $scope.tempTimer = {};
     var nextTimerID = 3;

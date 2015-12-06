@@ -36,9 +36,8 @@
         <form class="form">
             <div class="form-group">
                 <div class="input-group">
-                    <input type="text" class="form-control" ng-model="tempTimer.time" ng-change="checkValid(tempTimer)" placeholder="5 minutes" focus>
+                    <input type="text" class="form-control" ng-model="tempTimer.time" ng-change="checkValid(tempTimer)" placeholder="5 minutes" autofocus>
                     <span class="input-group-addon">
-                        <!-- <input type="button" class="btn btn-primary" value="add" ng-click="add"> -->
                         <button type="submit" class="btn btn-primary" ng-click="addTimer()"><i class="fa fa-plus"></i></button>
                     </span>
                     <span class="input-group-addon">
@@ -53,7 +52,6 @@
                     <div class="form-group has-success has-feedback" id="timerGroup{[ timer.id ]}">
                         <div class="input-group">
                             <input type="text" class="form-control" ng-model="timer.time" ng-change="checkValid(timer)">
-                            <!-- <span class="glyphicon glyphicon-ok form-control-feedback" aria-hidden="true"></span> -->
                             <span class="input-group-addon">
                                 <button type="button" class="btn btn-info" ng-click="deleteTimer(timer)"><i class="fa fa-times"></i></button>
                             </span>
