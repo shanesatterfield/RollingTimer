@@ -18,11 +18,15 @@
         <script src="/static/bower_components/jquery/dist/jquery.min.js"></script>
         <script src="/static/bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
 
+        <!-- Animate.css https://github.com/daneden/animate.css -->
+        <link rel="stylesheet" href="/static/css/animate.min.css">
+
         <!-- My Stylesheets -->
         <link rel="stylesheet" href="/static/css/style.css" />
 
         <!-- AngularJS -->
         <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular-animate.min.js"></script>
         <script src="//cdnjs.cloudflare.com/ajax/libs/angular-ui/0.4.0/angular-ui.min.js"></script>
 
         <!-- My Angluar -->
@@ -48,7 +52,7 @@
 
 
             <ul class="list-unstyled" ng:model="timers">
-                <li ng:repeat="timer in timers">
+                <li ng:repeat="timer in timers" class="repeated-anim animated">
                     <div class="form-group has-success has-feedback" id="timerGroup{[ timer.id ]}">
                         <div class="input-group">
                             <input type="text" class="form-control" ng-model="timer.time" ng-change="checkValid(timer)">

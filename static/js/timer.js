@@ -1,4 +1,4 @@
-var app = angular.module('timerApp', ['ui']);
+var app = angular.module('timerApp', ['ngAnimate']);
 
 // This allows the Jinja2 template engine to work nicely with AngularJS's
 // templating engine. The main problem is that they both use {{ variable }}.
@@ -35,12 +35,10 @@ app.controller('TimerListController', function($scope) {
         timer.valid = $scope.isValidTime(timer.time);
         var timerGroup = $('#timerGroup' + timer.id);
         if(timer.valid) {
-            console.log(timerGroup)
             timerGroup.removeClass('has-error');
             timerGroup.addClass('has-success');
         }
         else {
-            console.log('what')
             timerGroup.removeClass('has-success');
             timerGroup.addClass('has-error');
         }
@@ -61,4 +59,31 @@ app.controller('TimerListController', function($scope) {
     $scope.startTimers = function() {
 
     };
+});
+
+app.animation('.repeated-anim', function() {
+    var duration = 'fast';
+
+    return {
+        enter: function(elem, done) {
+            $(elem).addClass('flipInX');
+            return function(isCancelled) {
+                if(isCancelled) {
+                    jQuery(element).stop();
+                }
+            }
+        },
+
+        leave: function(elem, done) {
+            $(elem).addClass('flipOutX').delay(1000).queue(function(next) {
+                done();
+                next();
+            });
+            return function(isCancelled) {
+                if(isCancelled) {
+                    jQuery(element).stop();
+                }
+            }
+        }
+    }
 });
