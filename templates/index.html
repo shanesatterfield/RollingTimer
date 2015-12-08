@@ -36,15 +36,17 @@
     <body ng-controller="TimerListController">
         <div class="container">
             <h1 class="text-center">{{ title }}</h1>
+
+            <!-- <div class="jumbotron">{[ currTime.hr ]} hours {[ currTime.min ]} minutes {[ currTime.sec ]} sec</div> -->
             <br>
 
             <form class="form">
-                <div class="form-group">
+                <div class="form-group" id="timerGroup{[ tempTimer.id ]}">
                     <div class="input-group">
                         <input type="text" class="form-control" ng-model="tempTimer.time" ng-change="checkValid(tempTimer)" placeholder="5 minutes" autofocus>
                         <span class="input-group-addon">
                             <button type="submit" class="btn btn-primary" ng-click="addTimer()"><i class="fa fa-plus"></i></button>
-                            <button type="button" class="btn btn-success">start</button>
+                            <button type="button" class="btn btn-success" ng-click="startTimers()">start</button>
                         </span>
                     </div>
                 </div>
