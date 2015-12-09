@@ -11,34 +11,57 @@ app.config(['$interpolateProvider', function($interpolateProvider) {
 app.controller('TimerListController', function($scope) {
 
     $scope.timers = [
-        { id: 1, time: '1 minute 30 seconds', valid: true },
+        { id: 1, time: '5s', valid: true },
         { id: 2, time: '2 hr 45 min 10 sec',  valid: true },
         { id: 3, time: '2 hours 10 minutes 30 seconds', valid: true }
     ];
 
     // $scope.timers = [];
+    // The current amount of time left in the count down.
     $scope.currTime = { hr: 0, min: 0, sec: 0 };
+
+    // The end datetime that needs to be reached.
     $scope.endTime = -1;
-    $scope.tempTimer = { id: 0 };
 
+    // The timer data corresponding to the original form input.
+    $scope.tempTimer = { id: 0, time: '' };
+
+    // Interval object that corresponds to the timer update function that runs
+    // every 100ms.
     var timeInterval;
-    var nextTimerID = 3;
-    var timerRegex = new RegExp("^(([0-9]+) (hour|Hour|hr|h)s{0,1}){0,1}?\\s*(([0-9]+) (minute|Minute|min|m)s{0,1}){0,1}?\\s*(([0-9]+) (second|Second|sec|s)s{0,1}){0,1}?$");
 
+    // The next id that would be assigned. Used for generating unique ids.
+    var nextTimerID = 3;
+
+    // The regex object used to check for validation of timer strings and for
+    // extracting the timer data from the timer string.
+    var timerRegex = new RegExp("^(([0-9]+)\\s*(hour|Hour|hr|h)s{0,1}){0,1}?\\s*(([0-9]+)\\s*(minute|Minute|min|m)s{0,1}){0,1}?\\s*(([0-9]+)\\s*(second|Second|sec|s)s{0,1}){0,1}?$");
+
+    // Attempts to add the temp timer data as a new timer to the list.
     $scope.addTimer = function() {
         $scope.checkValid($scope.tempTimer);
-        if($scope.tempTimer.valid) {
+        var validAddition = $scope.tempTimer.valid;
+        if(validAddition) {
             $scope.tempTimer.id = nextTimerID++;
             $scope.timers.push($scope.tempTimer);
-            $scope.tempTimer = {id: 0}
-
-            var timerGroup = $('#timerGroup' + $scope.tempTimer.id);
-            timerGroup.removeClass('has-success');
-            timerGroup.removeClass('has-error');
+            $scope.resetTempTimer();
         }
-
+        return validAddition;
     };
 
+    // Resets the temp timer data to its default.
+    $scope.resetTempTimer = function() {
+        // Reset values of the temp timer.
+        $scope.tempTimer = { id: 0, time: '' };
+
+        // Remove any form validation css classes.
+        var timerGroup = $('#timerGroup' + $scope.tempTimer.id);
+        timerGroup.removeClass('has-success');
+        timerGroup.removeClass('has-error');
+    }
+
+    // Checks if the timer string is a valid timer string. Adds form validation
+    // styling accordingly.
     $scope.checkValid = function(timer) {
         timer.valid = $scope.isValidTime(timer.time);
         var timerGroup = $('#timerGroup' + timer.id);
@@ -52,10 +75,12 @@ app.controller('TimerListController', function($scope) {
         }
     };
 
+    // The actual assertion for whether a timer string is valid.
     $scope.isValidTime = function(time) {
-        return time.match(timerRegex) != null;
+        return time.match(timerRegex) != null && time.length > 0;
     };
 
+    // Deletes a timer from the list of timers.
     $scope.deleteTimer = function(timer) {
         var index = $scope.timers.indexOf(timer);
         if(index > -1) {
@@ -63,29 +88,76 @@ app.controller('TimerListController', function($scope) {
         }
     };
 
-    // TODO: Actually add this functionality.
+    // Starts the list of timers. It runs until all timers have finished.
     $scope.startTimers = function() {
-        var matches = timerRegex.exec($scope.timers[0].time)
+        // Add in the temp timer in case the user meant for that to be included.
+        $scope.addTimer();
+        $scope.resetTempTimer();
+
+        // Only run if there are valid timers found.
+        if($scope.timers.length > 0) {
+            // Set the css classes for entering animations.
+            $('#timer-view').removeClass('bounceOut');
+            $('#timer-view').addClass('bounceIn');
+
+            $scope.startNewTimer();
+
+            // Set the function to run and update the timer at an interval of
+            // 100 ms so that it is more accurate. Otherwise it will jump
+            // seconds sometimes.
+            timeInterval = setInterval(function() {
+                // Update the current time remaining.
+                $scope.currTime = getRemainingTime($scope.endTime);
+
+                // Tell Angular to update bindings in the html.
+                $scope.$digest();
+
+                // When the there is less than 1000 ms left, note that this is
+                // so that the timer ends after the 1 sec mark is gone,
+                // stop the timer and move onto the next one.
+                if($scope.currTime.total <= 1000) {
+                    if($scope.timers.length <= 0) {
+                        $scope.stopTimers();
+                    }
+                    else {
+                        $scope.startNewTimer();
+                        $scope.$digest();
+                    }
+
+                }
+            }, 100);
+        }
+    };
+
+    // Starts the first timer in the list of timers then removes that timer.
+    $scope.startNewTimer = function() {
+        var matches = timerRegex.exec($scope.timers[0].time);
         $scope.currTime = {
             hr:  parseInt(matches[2]) || 0,
             min: parseInt(matches[5]) || 0,
             sec: parseInt(matches[8]) || 0
         };
 
-        $scope.endTime = new Date(new Date().getTime() + timeToMilli($scope.currTime.hr, $scope.currTime.min, $scope.currTime.sec));
-        $scope.currTime = getRemainingTime($scope.endTime);
-        timeInterval = setInterval(function() {
-            $scope.currTime = getRemainingTime($scope.endTime);
-            $scope.$apply();
+        // Set the time that you approach. The time when it ends.
+        $scope.endTime = new Date(new Date().getTime() + timeToMilli($scope.currTime.hr, $scope.currTime.min, $scope.currTime.sec + 1));
 
-            if($scope.currTime.total <= 0) {
-                clearInterval(timeInterval);
-            }
-        }, 1000);
+        // Get the remaining time between now and the ending time.
+        $scope.currTime = getRemainingTime($scope.endTime);
+
+        // Move onto the next timer.
+        $scope.timers.shift();
     };
 
+    // Stops timers and the interval object. It also resets objects to default
+    // values and activates the leave animation for the timer view div.
     $scope.stopTimers = function() {
+        $scope.currTime = { hr: 0, min: 0, sec: 0 };
+        $scope.endTime  = 0;
+        clearInterval(timeInterval);
+        $scope.$digest();
 
+        $('#timer-view').removeClass('bounceIn');
+        $('#timer-view').addClass('bounceOut');
     };
 
     $scope.pause = function() {
@@ -97,6 +169,7 @@ app.controller('TimerListController', function($scope) {
     };
 });
 
+// The animation for the timers entering and leaving.
 app.animation('.repeated-anim', function() {
     var duration = 'fast';
 
@@ -123,6 +196,19 @@ app.animation('.repeated-anim', function() {
         }
     }
 });
+
+//////////////////////
+// Helper functions //
+//////////////////////
+
+function milliToTime(milli) {
+    return {
+        total: milli,
+        hr:  Math.floor((milli/(60 * 60 * 1000)) % 60),
+        min: Math.floor((milli/(60*1000)) % 60),
+        sec: Math.floor((milli/1000) % 60)
+    };
+}
 
 function timeToMilli(hours, minutes, seconds) {
     return hours * 3600000 + minutes * 60000 +  seconds * 1000;

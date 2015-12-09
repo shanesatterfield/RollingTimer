@@ -29,6 +29,9 @@
         <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular-animate.min.js"></script>
         <script src="//cdnjs.cloudflare.com/ajax/libs/angular-ui/0.4.0/angular-ui.min.js"></script>
 
+        <!-- Timer.js -->
+        <script src="/static/bower_components/timer.js/dist/timer.js"></script>
+
         <!-- My Angluar -->
         <script src="/static/js/timer.js"></script>
 
@@ -36,8 +39,8 @@
     <body ng-controller="TimerListController">
         <div class="container">
             <h1 class="text-center">{{ title }}</h1>
+            <div id="timer-view" class="animated"><h1>{[ currTime.hr ]}h {[ currTime.min ]}m {[ currTime.sec ]}s</h1></div>
 
-            <!-- <div class="jumbotron">{[ currTime.hr ]} hours {[ currTime.min ]} minutes {[ currTime.sec ]} sec</div> -->
             <br>
 
             <form class="form">
