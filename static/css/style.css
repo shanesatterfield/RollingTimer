@@ -5,9 +5,11 @@
 
 #timer-view > h1 {
     font-family: 'Bree Serif', serif;
-    font-size: 900%;
+    font-size: 1200%;
+    font-size: 50vh;
 }
 
 #banner {
     font-family: 'Montserrat', sans-serif;
+    text-align: center;
 }

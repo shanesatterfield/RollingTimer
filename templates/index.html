@@ -7,10 +7,7 @@
 
         <!-- Bootstrap -->
         <link rel="stylesheet" href="/static/bower_components/bootstrap/dist/css/bootstrap.min.css">
-        <!-- <link rel="stylesheet" href="/static/bower_components/bootstrap/dist/css/bootstrap-theme.min.css"> -->
         <link rel="stylesheet" href="https://bootswatch.com/paper/bootstrap.min.css">
-        <!-- <link rel="stylesheet" href="https://bootswatch.com/lumen/bootstrap.min.css"> -->
-        <!-- <link rel="stylesheet" href="https://bootswatch.com/simplex/bootstrap.min.css"> -->
 
         <!-- Font Awesome -->
         <link rel="stylesheet" href="/static/bower_components/font-awesome/css/font-awesome.min.css">
@@ -46,37 +43,54 @@
     </head>
     <body ng-controller="TimerListController">
         <div class="container">
-            <h1 id="banner" class="text-center">{{ title }}</h1>
+            <h1 id="banner" class="animated">{{ title }}</h1>
             <div id="timer-view" class="animated">
-                <h1>{[ currTime.text ]}</h1>
+                <h1 class="animated">{[ currTime.text ]}</h1>
                 <button type="button" class="btn btn-default" ng-click="pauseToggle()"><i id="pause-icon" class="fa fa-pause"></i></button>
                 <button type="button" class="btn btn-default" ng-click="startNewTimer()"><i class="fa fa-forward"></i></button>
+                <button type="button" class="btn btn-default" ng-click="restart()"><i class="fa fa-repeat"></i></button>
                 <button type="button" class="btn btn-default" ng-click="stopTimers()"><i class="fa fa-stop"></i></button>
             </div>
 
             <br>
 
             <form class="form">
-                <div class="form-group" id="timerGroup{[ tempTimer.id ]}">
-                    <div class="input-group">
-                        <input type="text" class="form-control" ng-model="tempTimer.time" ng-change="checkValid(tempTimer)" placeholder="5 minutes" autofocus>
-                        <span class="input-group-addon">
-                            <!-- <button type="submit" class="btn btn-primary" ng-click="addTimer()"><i class="fa fa-plus"></i></button> -->
-                            <button type="submit" class="btn btn-primary" ng-click="addTimer()">add</button>
-                            <button type="button" class="btn btn-success" ng-click="startTimers()">start</button>
-                        </span>
+                <div class="row">
+                    <div class="col-xs-3">
+                        <input type="text" class="form-control" ng-model="tempTimer.name" placeholder="name">
+                    </div>
+
+                    <div class="col-xs-9">
+                        <div class="form-group" id="timerGroup{[ tempTimer.id ]}">
+                            <div class="input-group">
+                                <input type="text" class="form-control" ng-model="tempTimer.time" ng-change="checkValid(tempTimer)" placeholder="5 minutes" autofocus>
+                                <span class="input-group-addon">
+                                    <!-- <button type="submit" class="btn btn-primary" ng-click="addTimer()"><i class="fa fa-plus"></i></button> -->
+                                    <button type="submit" class="btn btn-primary" ng-click="addTimer()">add</button>
+                                    <button type="button" class="btn btn-success" ng-click="startTimers()">start</button>
+                                </span>
+                            </div>
+                        </div>
+
                     </div>
                 </div>
 
 
                 <ul class="list-unstyled" ng:model="timers">
                     <li ng:repeat="timer in timers" class="repeated-anim animated">
-                        <div class="form-group has-success has-feedback" id="timerGroup{[ timer.id ]}">
-                            <div class="input-group">
-                                <input type="text" class="form-control" ng-model="timer.time" ng-change="checkValid(timer)">
-                                <span class="input-group-addon">
-                                    <button type="button" class="btn btn-info" ng-click="deleteTimer(timer)"><i class="fa fa-times"></i></button>
-                                </span>
+                        <div class="row">
+                            <div class="col-xs-3">
+                                <input type="text" class="form-control" ng-model="timer.name">
+                            </div>
+                            <div class="col-xs-9">
+                                <div class="form-group has-success has-feedback" id="timerGroup{[ timer.id ]}">
+                                    <div class="input-group">
+                                        <input type="text" class="form-control" ng-model="timer.time" ng-change="checkValid(timer)">
+                                        <span class="input-group-addon">
+                                            <button type="button" class="btn btn-info" ng-click="deleteTimer(timer)"><i class="fa fa-times"></i></button>
+                                        </span>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </li>
