@@ -35,6 +35,7 @@ app.controller('TimerListController', function($scope) {
     // SoundJS initialization
     var soundID = 'alarm';
     var isPlaying = false;
+    var soundInst;
     createjs.Sound.registerSound('/static/assets/alarm.mp3', soundID);
 
     // Attempts to add the temp timer data as a new timer to the list.
@@ -120,7 +121,8 @@ app.controller('TimerListController', function($scope) {
                     if(isPlaying == false) {
 
                         // Play the alarm and when done, move onto the next timer.
-                        $scope.playAlarm().on('complete', function() {
+                        soundInst = $scope.playAlarm();
+                        soundInst.on('complete', function() {
                             if($scope.timers.length <= 0) {
                                 $scope.stopTimers();
                             }
@@ -132,7 +134,7 @@ app.controller('TimerListController', function($scope) {
                             isPlaying = false;
                             $('#timer-view').removeClass('infinite pulse');
                         });
-
+                        console.log(soundInst);
                         isPlaying = true;
                     }
                     else {
@@ -177,10 +179,14 @@ app.controller('TimerListController', function($scope) {
     // Stops timers and the interval object. It also resets objects to default
     // values and activates the leave animation for the timer view div.
     $scope.stopTimers = function() {
-        $scope.currTime = { hr: 0, min: 0, sec: 0 };
+        $scope.currTime = { hr: 0, min: 0, sec: 0, text: '0s' };
         $scope.endTime  = 0;
         clearInterval(timeInterval);
-        $scope.$digest();
+
+        if(soundInst) {
+            soundInst.stop();
+        }
+        // $scope.$digest();
 
         $('#timer-view').removeClass('bounceIn');
         $('#timer-view').addClass('bounceOut').delay(700).queue(function(next) {
@@ -189,11 +195,21 @@ app.controller('TimerListController', function($scope) {
         });
     };
 
+    // Use this to pause and unpause the timer when the pause/play button is clicked.
+    $scope.pauseToggle = function() {
+
+    };
+
     $scope.pause = function() {
 
     };
 
     $scope.unpause = function() {
+
+    };
+
+    // TODO: Add ability to restart the current timer and have it paused.
+    $scope.restart = function() {
 
     };
 

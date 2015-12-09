@@ -43,8 +43,12 @@
     <body ng-controller="TimerListController">
         <div class="container">
             <h1 class="text-center">{{ title }}</h1>
-            <!-- <div id="timer-view" class="animated"><h1>{[currTime.hr + 'h']} {[ currTime.min ]}m {[ currTime.sec ]}s</h1></div> -->
-            <div id="timer-view" class="animated"><h1>{[ currTime.text ]}</h1></div>
+            <div id="timer-view" class="animated">
+                <h1>{[ currTime.text ]}</h1>
+                <button type="button" class="btn btn-default" ng-click="pauseToggle()" id="pause-button"><i class="fa fa-pause"></i></button>
+                <button type="button" class="btn btn-default" ng-click="startNewTimer()"><i class="fa fa-forward"></i></button>
+                <button type="button" class="btn btn-default" ng-click="stopTimers()"><i class="fa fa-stop"></i></button>
+            </div>
 
             <br>
 
