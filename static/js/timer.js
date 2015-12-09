@@ -37,6 +37,11 @@ app.controller('TimerListController', function($scope) {
     var isPlaying = false;
     var soundInst;
     createjs.Sound.registerSound('/static/assets/alarm.mp3', soundID);
+    var ppc = new createjs.PlayPropsConfig().set({ startTime: 0, duration: 2000 });
+
+    // Pausing
+    var paused = false;
+    var pausedTime = 0;
 
     // Attempts to add the temp timer data as a new timer to the list.
     $scope.addTimer = function() {
@@ -98,8 +103,7 @@ app.controller('TimerListController', function($scope) {
         // Only run if there are valid timers found.
         if($scope.timers.length > 0) {
             // Set the css classes for entering animations.
-            $('#timer-view').removeClass('bounceOut');
-            $('#timer-view').show().addClass('bounceIn').delay(700).queue(function(next) {
+            $('#timer-view').attr('class', 'animated').show().addClass('bounceIn').delay(700).queue(function(next) {
                 $(this).removeClass('bounceIn');
                 next();
             });
@@ -110,8 +114,10 @@ app.controller('TimerListController', function($scope) {
             // 100 ms so that it is more accurate. Otherwise it will jump
             // seconds sometimes.
             timeInterval = setInterval(function() {
-                // Update the current time remaining.
-                $scope.currTime = getRemainingTime($scope.endTime);
+                if(paused == false) {
+                    // Update the current time remaining.
+                    $scope.currTime = getRemainingTime($scope.endTime);
+                }
 
                 // When the there is less than 1000 ms left, note that this is
                 // so that the timer ends after the 1 sec mark is gone,
@@ -132,7 +138,7 @@ app.controller('TimerListController', function($scope) {
 
                             // The alarm is no longer playing.
                             isPlaying = false;
-                            $('#timer-view').removeClass('infinite pulse');
+                            $('#timer-view').attr('class', 'animated');
                         });
                         console.log(soundInst);
                         isPlaying = true;
@@ -182,14 +188,13 @@ app.controller('TimerListController', function($scope) {
         $scope.currTime = { hr: 0, min: 0, sec: 0, text: '0s' };
         $scope.endTime  = 0;
         clearInterval(timeInterval);
+        // $scope.$digest();
 
         if(soundInst) {
             soundInst.stop();
         }
-        // $scope.$digest();
 
-        $('#timer-view').removeClass('bounceIn');
-        $('#timer-view').addClass('bounceOut').delay(700).queue(function(next) {
+        $('#timer-view').attr('class', 'animated').addClass('bounceOut').delay(700).queue(function(next) {
             $(this).hide();
             next();
         });
@@ -197,15 +202,28 @@ app.controller('TimerListController', function($scope) {
 
     // Use this to pause and unpause the timer when the pause/play button is clicked.
     $scope.pauseToggle = function() {
-
+        var pauseButton = $('#pause-icon');
+        if(paused) {
+            $scope.unpause();
+            pauseButton.removeClass('fa-play').addClass('fa-pause');
+        }
+        else {
+            $scope.pause();
+            pauseButton.removeClass('fa-pause').addClass('fa-play');
+        }
     };
 
     $scope.pause = function() {
-
+        paused = true;
+        pausedTime = new Date();
+        if(soundInst) {
+            soundInst.stop();
+        }
     };
 
     $scope.unpause = function() {
-
+        $scope.endTime = new Date($scope.endTime.getTime() + new Date().getTime() - pausedTime);
+        paused = false;
     };
 
     // TODO: Add ability to restart the current timer and have it paused.
@@ -214,7 +232,7 @@ app.controller('TimerListController', function($scope) {
     };
 
     $scope.playAlarm = function() {
-        return createjs.Sound.play(soundID);
+        return createjs.Sound.play(soundID, ppc);
     };
 });
 
