@@ -20,6 +20,7 @@
   ],
   "dependencies": {
     "bootstrap": "~3.3.6",
-    "timer.js": "timerjs#~1.0.4"
+    "timer.js": "timerjs#~1.0.4",
+    "font-awesome": "~4.5.0"
   }
 }

@@ -37,6 +37,11 @@ app.controller('TimerListController', function($scope) {
     // extracting the timer data from the timer string.
     var timerRegex = new RegExp("^(([0-9]+)\\s*(hour|Hour|hr|h)s{0,1}){0,1}?\\s*(([0-9]+)\\s*(minute|Minute|min|m)s{0,1}){0,1}?\\s*(([0-9]+)\\s*(second|Second|sec|s)s{0,1}){0,1}?$");
 
+    // SoundJS initialization
+    var soundID = 'alarm';
+    var isPlaying = false;
+    createjs.Sound.registerSound('/static/assets/alarm.mp3', soundID);
+
     // Attempts to add the temp timer data as a new timer to the list.
     $scope.addTimer = function() {
         $scope.checkValid($scope.tempTimer);
@@ -98,7 +103,10 @@ app.controller('TimerListController', function($scope) {
         if($scope.timers.length > 0) {
             // Set the css classes for entering animations.
             $('#timer-view').removeClass('bounceOut');
-            $('#timer-view').show().addClass('bounceIn');
+            $('#timer-view').show().addClass('bounceIn').delay(700).queue(function(next) {
+                $(this).removeClass('bounceIn');
+                next();
+            });
 
             $scope.startNewTimer();
 
@@ -109,43 +117,66 @@ app.controller('TimerListController', function($scope) {
                 // Update the current time remaining.
                 $scope.currTime = getRemainingTime($scope.endTime);
 
-                // Tell Angular to update bindings in the html.
-                $scope.$digest();
-
                 // When the there is less than 1000 ms left, note that this is
                 // so that the timer ends after the 1 sec mark is gone,
                 // stop the timer and move onto the next one.
                 if($scope.currTime.total <= 1000) {
-                    if($scope.timers.length <= 0) {
-                        $scope.stopTimers();
+                    // If the alarm is not already playing, start playing it.
+                    if(isPlaying == false) {
+
+                        // Play the alarm and when done, move onto the next timer.
+                        $scope.playAlarm().on('complete', function() {
+                            if($scope.timers.length <= 0) {
+                                $scope.stopTimers();
+                            }
+                            else {
+                                $scope.startNewTimer();
+                            }
+
+                            // The alarm is no longer playing.
+                            isPlaying = false;
+                            $('#timer-view').removeClass('infinite pulse');
+                        });
+
+                        isPlaying = true;
                     }
                     else {
-                        $scope.startNewTimer();
-                        $scope.$digest();
+                        $scope.currTime = { total: 0, hr: 0, min: 0, sec: 0 };
+                        $('#timer-view').addClass('infinite pulse');
                     }
-
                 }
+
+                // Tell Angular to update bindings in the html.
+                $scope.$digest();
             }, 100);
         }
     };
 
     // Starts the first timer in the list of timers then removes that timer.
     $scope.startNewTimer = function() {
-        var matches = timerRegex.exec($scope.timers[0].time);
-        $scope.currTime = {
-            hr:  parseInt(matches[2]) || 0,
-            min: parseInt(matches[5]) || 0,
-            sec: parseInt(matches[8]) || 0
-        };
+        // Eliminate invalid timers.
+        while($scope.timers.length > 0 && $scope.timers[0].valid == false) {
+            $scope.timers.shift();
+        }
 
-        // Set the time that you approach. The time when it ends.
-        $scope.endTime = new Date(new Date().getTime() + timeToMilli($scope.currTime.hr, $scope.currTime.min, $scope.currTime.sec + 1));
+        // Only run if there are timers left to be run.
+        if($scope.timers.length > 0) {
+            var matches = timerRegex.exec($scope.timers[0].time);
+            $scope.currTime = {
+                hr:  parseInt(matches[2]) || 0,
+                min: parseInt(matches[5]) || 0,
+                sec: parseInt(matches[8]) || 0
+            };
 
-        // Get the remaining time between now and the ending time.
-        $scope.currTime = getRemainingTime($scope.endTime);
+            // Set the time that you approach. The time when it ends.
+            $scope.endTime = new Date(new Date().getTime() + timeToMilli($scope.currTime.hr, $scope.currTime.min, $scope.currTime.sec + 1));
 
-        // Move onto the next timer.
-        $scope.timers.shift();
+            // Get the remaining time between now and the ending time.
+            $scope.currTime = getRemainingTime($scope.endTime);
+
+            // Move onto the next timer.
+            $scope.timers.shift();
+        }
     };
 
     // Stops timers and the interval object. It also resets objects to default
@@ -169,6 +200,10 @@ app.controller('TimerListController', function($scope) {
 
     $scope.unpause = function() {
 
+    };
+
+    $scope.playAlarm = function() {
+        return createjs.Sound.play(soundID);
     };
 });
 
