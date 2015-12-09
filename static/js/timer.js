@@ -13,7 +13,7 @@ app.controller('TimerListController', function($scope) {
     $scope.timers = [];
 
     // The current amount of time left in the count down.
-    $scope.currTime = { hr: 0, min: 0, sec: 0 };
+    $scope.currTime = { total: 0, hr: 0, min: 0, sec: 0, text: '0s' };
 
     // The end datetime that needs to be reached.
     $scope.endTime = -1;
@@ -136,7 +136,7 @@ app.controller('TimerListController', function($scope) {
                         isPlaying = true;
                     }
                     else {
-                        $scope.currTime = { total: 0, hr: 0, min: 0, sec: 0 };
+                        $scope.currTime = { total: 0, hr: 0, min: 0, sec: 0, text: '0s' };
                         $('#timer-view').addClass('infinite pulse');
                     }
                 }
@@ -239,8 +239,22 @@ function milliToTime(milli) {
         total: milli,
         hr:  Math.floor((milli/(60 * 60 * 1000)) % 60),
         min: Math.floor((milli/(60*1000)) % 60),
-        sec: Math.floor((milli/1000) % 60)
+        sec: Math.floor((milli/1000) % 60),
+        text: renderTime(this.hr, this.min, this.sec)
     };
+}
+
+// Takes time in hours, minutes and seconds and creates a pretty string.
+function renderTime(hr, min, sec) {
+    return conjif(hr, 'h ') + conjif(min, 'm ') + sec.toString() + 's';
+}
+
+// Helper function that either conjoins two strings or returns an empty string
+// depending on whether or not the first value is greater than 0.
+function conjif(a, b) {
+    if(a > 0)
+        return a.toString() + b;
+    return '';
 }
 
 function timeToMilli(hours, minutes, seconds) {
@@ -248,11 +262,16 @@ function timeToMilli(hours, minutes, seconds) {
 }
 
 function getRemainingTime(end) {
-    var time = end - new Date();
+    var time = end - new Date(),
+        hr   = Math.floor((time/(60 * 60 * 1000)) % 60),
+        min  = Math.floor((time/(60*1000)) % 60),
+        sec  = Math.floor((time/1000) % 60);
+
     return {
         total: time,
-        hr:  Math.floor((time/(60 * 60 * 1000)) % 60),
-        min: Math.floor((time/(60*1000)) % 60),
-        sec: Math.floor((time/1000) % 60)
+        hr:  hr,
+        min: min,
+        sec: sec,
+        text: renderTime(hr, min, sec)
     };
 }

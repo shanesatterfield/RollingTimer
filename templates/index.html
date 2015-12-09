@@ -43,7 +43,8 @@
     <body ng-controller="TimerListController">
         <div class="container">
             <h1 class="text-center">{{ title }}</h1>
-            <div id="timer-view" class="animated"><h1>{[ currTime.hr ]}h {[ currTime.min ]}m {[ currTime.sec ]}s</h1></div>
+            <!-- <div id="timer-view" class="animated"><h1>{[currTime.hr + 'h']} {[ currTime.min ]}m {[ currTime.sec ]}s</h1></div> -->
+            <div id="timer-view" class="animated"><h1>{[ currTime.text ]}</h1></div>
 
             <br>
 
