@@ -9,14 +9,9 @@ app.config(['$interpolateProvider', function($interpolateProvider) {
 }]);
 
 app.controller('TimerListController', function($scope) {
+    // A list of the timers.
+    $scope.timers = [];
 
-    $scope.timers = [
-        { id: 1, time: '5s', valid: true },
-        { id: 2, time: '2 hr 45 min 10 sec',  valid: true },
-        { id: 3, time: '2 hours 10 minutes 30 seconds', valid: true }
-    ];
-
-    // $scope.timers = [];
     // The current amount of time left in the count down.
     $scope.currTime = { hr: 0, min: 0, sec: 0 };
 
