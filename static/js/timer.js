@@ -97,9 +97,8 @@ app.controller('TimerListController', function($scope) {
         // Only run if there are valid timers found.
         if($scope.timers.length > 0) {
             // Set the css classes for entering animations.
-            // $('#timer-view').removeClass('bounceOut');
-            // $('#timer-view').addClass('bounceIn');
-            $('#timer-view').fadeIn('slow');
+            $('#timer-view').removeClass('bounceOut');
+            $('#timer-view').show().addClass('bounceIn');
 
             $scope.startNewTimer();
 
@@ -157,12 +156,11 @@ app.controller('TimerListController', function($scope) {
         clearInterval(timeInterval);
         $scope.$digest();
 
-        // $('#timer-view').removeClass('bounceIn');
-        // $('#timer-view').addClass('bounceOut').delay(700).queue(function(next) {
-        //     $(this).hide();
-        //     next();
-        // });
-        $('#timer-view').fadeOut();
+        $('#timer-view').removeClass('bounceIn');
+        $('#timer-view').addClass('bounceOut').delay(700).queue(function(next) {
+            $(this).hide();
+            next();
+        });
     };
 
     $scope.pause = function() {
