@@ -6,15 +6,15 @@
         <title>{{ title }}</title>
 
         <!-- Bootstrap -->
-        <link rel="stylesheet" href="/static/bower_components/bootstrap/dist/css/bootstrap.min.css">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
         <link rel="stylesheet" href="https://bootswatch.com/paper/bootstrap.min.css">
 
         <!-- Font Awesome -->
-        <link rel="stylesheet" href="/static/bower_components/font-awesome/css/font-awesome.min.css">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
 
         <!-- jQuery and Bootstrap Javascript -->
-        <script src="/static/bower_components/jquery/dist/jquery.min.js"></script>
-        <script src="/static/bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+        <script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
 
         <!-- Animate.css https://github.com/daneden/animate.css -->
         <link rel="stylesheet" href="/static/css/animate.min.css">
@@ -30,11 +30,9 @@
         <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular-animate.min.js"></script>
         <script src="//cdnjs.cloudflare.com/ajax/libs/angular-ui/0.4.0/angular-ui.min.js"></script>
 
-        <!-- Timer.js https://github.com/husa/timer.js -->
-        <script src="/static/bower_components/timer.js/dist/timer.js"></script>
-
         <!-- My Angluar -->
         <script src="/static/js/timer.js"></script>
+        <script src="/static/js/anims.js"></script>
 
         <!-- Google Fonts -->
         <link href='https://fonts.googleapis.com/css?family=Bree+Serif' rel='stylesheet' type='text/css'>
@@ -42,7 +40,7 @@
 
     </head>
     <body ng-controller="TimerListController">
-        <div class="container">
+        <div class="container-fluid">
             <h1 id="banner" class="animated">{{ title }}</h1>
             <div id="timer-view" class="animated">
                 <h1 class="animated">{[ currTime.text ]}</h1>
@@ -51,9 +49,10 @@
                 <button type="button" class="btn btn-default" ng-click="restart()"><i class="fa fa-repeat"></i></button>
                 <button type="button" class="btn btn-default" ng-click="stopTimers()"><i class="fa fa-stop"></i></button>
             </div>
-
             <br>
 
+        </div>
+        <div class="container">
             <form class="form">
                 <div class="row">
                     <div class="col-xs-3">
