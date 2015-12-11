@@ -35,6 +35,7 @@
 
         <!-- My Angluar -->
         <script src="/static/js/timer.js"></script>
+        <script src="/static/js/anims.js"></script>
 
         <!-- Google Fonts -->
         <link href='https://fonts.googleapis.com/css?family=Bree+Serif' rel='stylesheet' type='text/css'>
@@ -42,7 +43,7 @@
 
     </head>
     <body ng-controller="TimerListController">
-        <div class="container">
+        <div class="container-fluid">
             <h1 id="banner" class="animated">{{ title }}</h1>
             <div id="timer-view" class="animated">
                 <h1 class="animated">{[ currTime.text ]}</h1>
@@ -51,9 +52,10 @@
                 <button type="button" class="btn btn-default" ng-click="restart()"><i class="fa fa-repeat"></i></button>
                 <button type="button" class="btn btn-default" ng-click="stopTimers()"><i class="fa fa-stop"></i></button>
             </div>
-
             <br>
 
+        </div>
+        <div class="container">
             <form class="form">
                 <div class="row">
                     <div class="col-xs-3">
