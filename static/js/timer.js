@@ -187,7 +187,7 @@ app.controller('TimerListController', function($scope) {
             $scope.previousTimer = $scope.timers[0];
             $scope.timers.shift();
 
-            var textLength = Math.min(Math.floor(100 / $scope.currTime.text.length).toString(), 11);
+            var textLength = Math.max($scope.currTime.text.length.toString(), 11);
             $('#timer-view > h1').css('font-size', textLength.toString() + 'vw');
             console.log($('#timer-view > h1').css('font-size'), Math.floor(100 / $scope.currTime.text.length).toString());
             $('#banner').html($scope.previousTimer.name).addClass('rubberBand').delay(1000).queue(function(next) {

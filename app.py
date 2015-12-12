@@ -6,5 +6,4 @@ def index():
     return render_template('index.html', title='Rolling Timer')
 
 if __name__ == '__main__':
-    app.debug = True
     app.run()
