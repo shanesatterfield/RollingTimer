@@ -30,7 +30,7 @@ app.controller('TimerListController', function($scope) {
 
     // The regex object used to check for validation of timer strings and for
     // extracting the timer data from the timer string.
-    var timerRegex = new RegExp("^(([0-9]+)\\s*(hour|Hour|hr|h)s{0,1}){0,1}?\\s*(([0-9]+)\\s*(minute|Minute|min|m)s{0,1}){0,1}?\\s*(([0-9]+)\\s*(second|Second|sec|s)s{0,1}){0,1}?$");
+    var timerRegex = new RegExp("^(([0-9]+)\\s*(hour|Hour|hr|Hr|h|H)s{0,1}){0,1}?\\s*(([0-9]+)\\s*(minute|Minute|min|Min|m|M)s{0,1}){0,1}?\\s*(([0-9]+)\\s*(second|Second|sec|Sec|s|S)s{0,1}){0,1}?$");
 
     // SoundJS initialization
     var soundID = 'alarm';
@@ -44,7 +44,7 @@ app.controller('TimerListController', function($scope) {
     var pausedTime = 0;
 
     $scope.previousTimer = {};
-    $scope.bannerText = $('#banner').text()
+    $scope.bannerText = $('#banner').text();
 
     // Attempts to add the temp timer data as a new timer to the list.
     $scope.addTimer = function() {
@@ -260,6 +260,7 @@ app.controller('TimerListController', function($scope) {
         return createjs.Sound.play(soundID, ppc);
     };
 });
+
 
 //////////////////////
 // Helper functions //
