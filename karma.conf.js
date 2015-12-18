@@ -20,6 +20,7 @@ module.exports = function(config) {
       'static/bower_components/angular-animate/angular-animate.min.js',
       'static/bower_components/SoundJS/lib/soundjs-0.6.2.min.js',
       'static/bower_components/jquery/dist/jquery.min.js',
+      'static/js/helper.js',
       'static/js/timer.js',
       'static/js/anims.js',
       'spec/behavior/**/*_test.js'
