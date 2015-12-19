@@ -178,7 +178,7 @@ app.controller('TimerListController', function($scope) {
             };
 
             // Set the time that you approach. The time when it ends.
-            $scope.endTime = new Date(new Date().getTime() + timeToMilli($scope.currTime.hr, $scope.currTime.min, $scope.currTime.sec));
+            $scope.endTime = getEndTime($scope.currTime.hr, $scope.currTime.min, $scope.currTime.sec);
 
             // Get the remaining time between now and the ending time.
             $scope.currTime = getRemainingTime($scope.endTime);

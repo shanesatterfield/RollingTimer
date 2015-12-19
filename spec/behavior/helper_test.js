@@ -30,4 +30,91 @@ describe('Helper Functions Tests', function() {
 
     });
 
+    describe('conjif', function() {
+        var text = [' 12 asdf', 'hr', ' hr', 'hr ', ' h ', '', 'm ', 's '];
+
+        it('should work on positive', function() {
+            for(var i = 1; i < 1500; ++i) {
+                text.forEach(function(item) {
+                    expect(conjif(i, item)).toBe(i.toString() + item);
+                });
+            }
+        });
+
+        it('should give empty string on negative', function() {
+            for(var i = -1500; i <= 0; ++i) {
+                text.forEach(function(item) {
+                    expect(conjif(i, item)).toBe('');
+                });
+            }
+        });
+
+    });
+
+    describe('getRemainingTime', function() {
+        function testGetRemainingTime(hr, min, sec) {
+            hr  = Math.max(hr,  0),
+            min = Math.max(min, 0),
+            sec = Math.max(sec, 0);
+
+            var expected = {
+                total: timeToMilli(hr, min, sec),
+                hr:    hr + (Math.floor(min / 60) + Math.floor(sec / 3600)),
+                min:   (min + Math.floor(sec / 60) % 60) % 60,
+                sec:   sec % 60
+            };
+
+            expected.text = renderTime(expected.hr, expected.min, expected.sec);
+            expect(getRemainingTime(getEndTime(hr, min, sec))).toEqual(expected);
+        }
+
+        it('should work on 1 second', function() {
+            testGetRemainingTime(0, 0, 1);
+        });
+
+        it('should work on positive minutes', function() {
+            testGetRemainingTime(0, 55, 1);
+        });
+
+        it('should work on positive hours', function() {
+            testGetRemainingTime(123, 0, 1);
+        });
+
+        it('should work on -1 seconds', function() {
+            testGetRemainingTime(0, 0, -1);
+        });
+
+        it('should work on negative minutes', function() {
+            testGetRemainingTime(0, -23, -1);
+        });
+
+        it('should work on negative hours', function() {
+            testGetRemainingTime(-120, -23, -1);
+        });
+
+        it('should work on both positive and negatives', function() {
+            testGetRemainingTime( 1230,  23, -1);
+            testGetRemainingTime( 1230, -23, -1);
+            testGetRemainingTime(-1230, -23, -1);
+
+            testGetRemainingTime( 1230, -23,  1);
+            testGetRemainingTime( 1230, -23, -1);
+            testGetRemainingTime(-1230, -23, -1);
+
+            testGetRemainingTime(-1230,  23,  1);
+            testGetRemainingTime(-1230,  23, -1);
+            testGetRemainingTime(-1230, -23, -1);
+        });
+
+        it('should work with large values', function() {
+            testGetRemainingTime(   123123,       0,         0);
+            testGetRemainingTime(        0, 1233453,         0);
+            testGetRemainingTime(   123123, 1233453,         0);
+            testGetRemainingTime(   123123, 1233453, 345345234);
+            testGetRemainingTime(   123123,       0, 345345234);
+            testGetRemainingTime(        0,       0, 345345234);
+        });
+
+    });
+
 });
