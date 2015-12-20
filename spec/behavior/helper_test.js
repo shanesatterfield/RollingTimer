@@ -117,4 +117,23 @@ describe('Helper Functions Tests', function() {
 
     });
 
+    describe('conjifSec', function() {
+        var text = ['s ', 'asdf', ' 1234 fluffy '];
+
+        it('should work on positive seconds', function() {
+            for(var i = 0; i < 130; ++i) {
+                text.forEach(function(item) {
+                    expect(conjifSec(i, item)).toBe(i.toString() + item);
+                });
+            }
+        });
+
+        it('should work on positive seconds', function() {
+            for(var i = -123; i <= 0; ++i) {
+                text.forEach(function(item) {
+                    expect(conjifSec(i, item)).toBe('0' + item);
+                });
+            }
+        });
+    });
 });
