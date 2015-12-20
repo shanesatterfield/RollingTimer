@@ -26,16 +26,25 @@ function timeToMilli(hours, minutes, seconds) {
 }
 
 function getRemainingTime(end) {
-    var time = end - new Date(),
-        hr   = Math.floor((time/(60 * 60 * 1000)) % 60),
-        min  = Math.floor((time/(60*1000)) % 60),
-        sec  = Math.floor((time/1000) % 60);
+    var time = new Date(end - new Date()),
+        hr   = Math.floor((time.getTime()/(60 * 60 * 1000))),
+        min  = time.getMinutes(),
+        sec  = time.getSeconds();
 
     return {
-        total: time,
+        total: time.getTime(),
         hr:  hr,
         min: min,
         sec: sec,
         text: renderTime(hr, min, sec)
     };
+}
+
+// Returns a date object corresponding to a time ahead by the delta time.
+function getEndTime(hr, min, sec) {
+    hr  = Math.max(hr,  0),
+    min = Math.max(min, 0),
+    sec = Math.max(sec, 0);
+
+    return new Date(new Date().getTime() + timeToMilli(hr, min, sec));
 }
