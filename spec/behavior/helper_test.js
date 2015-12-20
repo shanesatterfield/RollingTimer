@@ -30,4 +30,45 @@ describe('Helper Functions Tests', function() {
 
     });
 
+    describe('conjif', function() {
+        var emptyState = '';
+
+        it('should work on correct hours', function() {
+            expect(conjif(45, 'h ')).toBe('45h ');
+        });
+
+        it('should work on correct minutes', function() {
+            expect(conjif(32, 'm ')).toBe('32m ');
+        });
+
+        it('should work on negative hours', function() {
+            expect(conjif(-100, 'h ')).toBe(emptyState);
+        });
+
+        it('should work on negative minutes', function() {
+            expect(conjif(-23, 'h ')).toBe(emptyState);
+        });
+
+    });
+
+    describe('conjifSec', function() {
+        var text = ['s ', 'asdf', ' 1234 fluffy '];
+
+        it('should work on positive seconds', function() {
+            for(var i = 0; i < 130; ++i) {
+                text.forEach(function(item) {
+                    expect(conjifSec(i, item)).toBe(i.toString() + item);
+                });
+            }
+        });
+
+        it('should work on positive seconds', function() {
+            for(var i = -123; i <= 0; ++i) {
+                text.forEach(function(item) {
+                    expect(conjifSec(i, item)).toBe('0' + item);
+                });
+            }
+        })
+    });
+
 });
