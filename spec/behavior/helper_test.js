@@ -136,4 +136,60 @@ describe('Helper Functions Tests', function() {
             }
         });
     });
+
+    describe('timeToMilli', function() {
+
+        it('should work on positive seconds', function() {
+            for(var i = 0; i < 120; ++i) {
+                expect(timeToMilli(0,0,i)).toBe(i * 1000);
+            }
+        });
+
+        it('should work on negative seconds', function() {
+            for(var i = 0; i > -120; --i) {
+                expect(timeToMilli(0,0,i)).toBe(i * 1000);
+            }
+        });
+
+        it('should work on positive minutes', function() {
+            for(var i = 0; i < 120; ++i) {
+                expect(timeToMilli(0,i,0)).toBe(i * 60000);
+            }
+        });
+
+        it('should work on negative minutes', function() {
+            for(var i = 0; i > -120; --i) {
+                expect(timeToMilli(0,i,0)).toBe(i * 60000);
+            }
+        });
+
+        it('should work on positive hours', function() {
+            for(var i = 0; i < 120; ++i) {
+                expect(timeToMilli(i,0,0)).toBe(i * 3600000);
+            }
+        });
+
+        it('should work on negative hours', function() {
+            for(var i = 0; i > -120; --i) {
+                expect(timeToMilli(i,0,0)).toBe(i * 3600000);
+            }
+        });
+
+        it('should work on minutes and seconds', function() {
+            expect(timeToMilli(0,2,1)).toBe(121000);
+        });
+
+        it('should work on hours and seconds', function() {
+            expect(timeToMilli(2,0,3)).toBe(7203000);
+        });
+
+        it('should work on hours and minutes', function() {
+            expect(timeToMilli(3,4,0)).toBe(11040000);
+        });
+
+        it('should work on hours, minutes and seconds', function() {
+            expect(timeToMilli(3,4,11)).toBe(11051000);
+        });
+
+    });
 });
