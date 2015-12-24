@@ -21,6 +21,10 @@
   "dependencies": {
     "bootstrap": "~3.3.6",
     "timer.js": "timerjs#~1.0.4",
-    "font-awesome": "~4.5.0"
+    "font-awesome": "~4.5.0",
+    "angular": "~1.4.8",
+    "angular-mocks": "~1.4.8",
+    "angular-animate": "~1.4.8",
+    "SoundJS": "createjs-soundjs#~0.6.2"
   }
 }
