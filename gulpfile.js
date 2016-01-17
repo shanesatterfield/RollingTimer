@@ -4,7 +4,8 @@ var uglify = require('gulp-uglify');
 var concat = require('gulp-concat');
 
 gulp.task('compress', function() {
-    gulp.src(['static/js/helper.js', 'static/js/timer.js', 'static/js/anim.js'])
+    gulp.src(['static/js/helper.js', 'static/js/timer.js', 'static/js/anims.js'])
+        .pipe(uglify())
         .pipe(concat('production.min.js'))
         .pipe(gulp.dest('static/'));
 });

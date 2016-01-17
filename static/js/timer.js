@@ -8,7 +8,7 @@ app.config(['$interpolateProvider', function($interpolateProvider) {
     $interpolateProvider.endSymbol(']}');
 }]);
 
-app.controller('TimerListController', function($scope) {
+app.controller('TimerListController', ['$scope', function($scope) {
     // A list of the timers.
     $scope.timers = [];
 
@@ -189,7 +189,7 @@ app.controller('TimerListController', function($scope) {
 
             var textLength = Math.max($scope.currTime.text.length.toString(), 11);
             $('#timer-view > h1').css('font-size', textLength.toString() + 'vw');
-            console.log($('#timer-view > h1').css('font-size'), Math.floor(100 / $scope.currTime.text.length).toString());
+            // console.log($('#timer-view > h1').css('font-size'), Math.floor(100 / $scope.currTime.text.length).toString());
             $('#banner').html($scope.previousTimer.name).addClass('rubberBand').delay(1000).queue(function(next) {
                 $(this).removeClass('rubberBand');
                 next();
@@ -259,4 +259,4 @@ app.controller('TimerListController', function($scope) {
     $scope.playAlarm = function() {
         return createjs.Sound.play(soundID, ppc);
     };
-});
+}]);

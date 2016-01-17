@@ -34,9 +34,7 @@
         <script src="/static/bower_components/timer.js/dist/timer.js"></script>
 
         <!-- My Angluar -->
-        <script src="/static/js/helper.js"></script>
-        <script src="/static/js/timer.js"></script>
-        <script src="/static/js/anims.js"></script>
+        <script src="/static/production.min.js"></script>
 
         <!-- Google Fonts -->
         <link href="https://fonts.googleapis.com/css?family=Bree+Serif" rel="stylesheet" type="text/css">
@@ -60,13 +58,13 @@
             <form class="form">
                 <div class="row">
                     <div class="col-xs-3">
-                        <input type="text" class="form-control" ng-model="tempTimer.name" placeholder="name">
+                        <input type="text" class="form-control" ng-model="tempTimer.name" placeholder="name" autofocus>
                     </div>
 
                     <div class="col-xs-9">
                         <div class="form-group" id="timerGroup{[ tempTimer.id ]}">
                             <div class="input-group">
-                                <input type="text" class="form-control" ng-model="tempTimer.time" ng-change="checkValid(tempTimer)" placeholder="5 minutes" autofocus>
+                                <input type="text" class="form-control" ng-model="tempTimer.time" ng-change="checkValid(tempTimer)" placeholder="5 minutes">
                                 <span class="input-group-addon">
                                     <button type="submit" class="btn btn-primary" ng-click="addTimer()">add</button>
                                     <button type="button" class="btn btn-success" ng-click="startTimers()">start</button>

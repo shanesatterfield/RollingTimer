@@ -1,4 +1,6 @@
 // The animation for the timers entering and leaving.
+var app = angular.module('timerApp');
+
 app.animation('.repeated-anim', function() {
     var duration = 'fast';
 

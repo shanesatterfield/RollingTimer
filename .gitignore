@@ -70,3 +70,6 @@ bower_components
 
 ### NodeJS ###
 node_modules/
+
+### Production ###
+static/production.min.js
