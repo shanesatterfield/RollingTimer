@@ -8,9 +8,15 @@ app.config(['$interpolateProvider', function($interpolateProvider) {
     $interpolateProvider.endSymbol(']}');
 }]);
 
-app.controller('TimerListController', function($scope) {
+app.controller('TimerListController', ['$scope', function($scope) {
     // A list of the timers.
-    $scope.timers = [];
+    $scope.timers = [
+        { id: 1, name: 'Rotation 1', time: '15m' },
+        { id: 2, name: 'Transition', time: '1m 30s' },
+        { id: 3, name: 'Rotation 2', time: '15m' },
+        { id: 4, name: 'Transition', time: '1m 30s' },
+        { id: 5, name: 'Rotation 3', time: '15m' },
+    ];
 
     // The current amount of time left in the count down.
     $scope.currTime = { total: 0, hr: 0, min: 0, sec: 0, text: '0s' };
@@ -189,7 +195,7 @@ app.controller('TimerListController', function($scope) {
 
             var textLength = Math.max($scope.currTime.text.length.toString(), 11);
             $('#timer-view > h1').css('font-size', textLength.toString() + 'vw');
-            console.log($('#timer-view > h1').css('font-size'), Math.floor(100 / $scope.currTime.text.length).toString());
+            // console.log($('#timer-view > h1').css('font-size'), Math.floor(100 / $scope.currTime.text.length).toString());
             $('#banner').html($scope.previousTimer.name).addClass('rubberBand').delay(1000).queue(function(next) {
                 $(this).removeClass('rubberBand');
                 next();
@@ -259,4 +265,4 @@ app.controller('TimerListController', function($scope) {
     $scope.playAlarm = function() {
         return createjs.Sound.play(soundID, ppc);
     };
-});
+}]);
