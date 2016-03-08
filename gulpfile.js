@@ -19,6 +19,6 @@ gulp.task('test', function(done) {
 });
 
 gulp.task('clean', function() {
-    gulp.src(['node_modules/', 'static/bower_components'], {read: false})
+    gulp.src(['node_modules/', 'static/bower_components', 'static/js/production.min.js'], {read: false})
         .pipe(clean());
 });
