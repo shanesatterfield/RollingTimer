@@ -4,6 +4,7 @@
   "description": "Runs a series of timers sequentially.",
   "main": "gulpfile.js",
   "scripts": {
+    "postinstall": "./node_modules/bower/bin/bower install",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -26,5 +27,9 @@
     "karma": "^0.13.15",
     "karma-chrome-launcher": "^0.2.2",
     "karma-jasmine": "^0.3.6"
+  },
+  "dependencies": {
+    "bower": "^1.7.7",
+    "gulp-clean": "^0.3.2"
   }
 }
